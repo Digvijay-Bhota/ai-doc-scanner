@@ -1,0 +1,17 @@
+# ── Secrets / Environment ─────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Uploaded user files (kept as directory placeholder only) ──
+uploads/*
+!uploads/.gitkeep
+
+# ── OCR binary (large — do not commit) ───────────────────────
+eng.traineddata
+
+# ── Dependencies ──────────────────────────────────────────────
+node_modules/
+
+# ── Logs ──────────────────────────────────────────────────────
+*.log

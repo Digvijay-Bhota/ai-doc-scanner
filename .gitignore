@@ -1,0 +1,38 @@
+# ── Environment / Secrets ─────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Dependencies ──────────────────────────────────────────────
+node_modules/
+**/node_modules/
+
+# ── Build / Distribution output ───────────────────────────────
+dist/
+dist-ssr/
+build/
+.vite/
+
+# ── Uploaded user files ───────────────────────────────────────
+server/uploads/*
+!server/uploads/.gitkeep
+
+# ── Logs ──────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── OS / Editor files ─────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.idea/
+.vscode/*
+!.vscode/extensions.json
