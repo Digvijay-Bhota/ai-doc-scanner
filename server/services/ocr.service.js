@@ -1,5 +1,5 @@
 const Tesseract = require('tesseract.js');
-const pdfParse  = require('pdf-parse');
+const { PDFParse } = require('pdf-parse');
 const fs        = require('fs');
 const path      = require('path');
 
@@ -63,10 +63,22 @@ const extractFromImage = async (filePath) => {
  * @returns {Promise<{ text: string, confidence: number, pageCount: number }>}
  */
 const extractFromPdf = async (filePath) => {
-    const buffer    = fs.readFileSync(filePath);
-    const data      = await pdfParse(buffer);
-    const nativeText = (data.text || '').trim();
-    const pageCount  = data.numpages || 1;
+    const buffer = fs.readFileSync(filePath);
+    const parser = new PDFParse({ data: buffer });
+    let nativeText = '';
+    let pageCount  = 1;
+
+    try {
+        const data = await parser.getText();
+        nativeText = data.pages
+            ? data.pages.map((p) => p.text).join('\n\n').trim()
+            : (data.text || '').trim();
+        pageCount = data.total || (data.pages ? data.pages.length : 1);
+    } catch (err) {
+        console.warn('⚠️ PDF text extraction warning:', err.message);
+    } finally {
+        try { await parser.destroy(); } catch (_) {}
+    }
 
     // Native text layer is present and meaningful — use it directly
     if (nativeText.length > 50) {
