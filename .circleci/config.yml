@@ -1,0 +1,51 @@
+version: 2.1
+
+jobs:
+  backend-check:
+    docker:
+      - image: cimg/node:24.14
+
+    working_directory: ~/ai-doc-scanner
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install backend dependencies
+          command: npm ci
+          working_directory: server
+
+      - run:
+          name: Check backend syntax
+          command: node --check controllers/auth.controller.js
+          working_directory: server
+
+      - run:
+          name: Check PDF OCR service syntax
+          command: node --check services/ocr.service.js
+          working_directory: server
+
+  frontend-build:
+    docker:
+      - image: cimg/node:24.14
+
+    working_directory: ~/ai-doc-scanner
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install frontend dependencies
+          command: npm ci
+          working_directory: client
+
+      - run:
+          name: Build frontend
+          command: npm run build
+          working_directory: client
+
+workflows:
+  ci:
+    jobs:
+      - backend-check
+      - frontend-build
