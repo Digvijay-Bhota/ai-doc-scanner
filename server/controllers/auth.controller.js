@@ -4,10 +4,12 @@ const { createUser, findByEmail, findById, updateUser, getUserStats } = require(
 const { generateToken } = require('../middleware/auth.middleware');
 const { ApiError } = require('../middleware/error.middleware');
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const COOKIE_OPTIONS = {
     httpOnly: true,
-    secure:   process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure:   isProd || process.env.COOKIE_SECURE === 'true',
+    sameSite: isProd ? 'none' : 'lax',
     path:     '/',
     maxAge:   7 * 24 * 60 * 60 * 1000, // 7 days
 };
